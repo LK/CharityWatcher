@@ -8,16 +8,17 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/JFKingsley/CharityWatcher.git"
+    "url": "https://github.com/LK/CharityWatcher.git"
   },
   "author": "Many, many people",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/JFKingsley/CharityWatcher/issues"
+    "url": "https://github.com/LK/CharityWatcher/issues"
   },
   "dependencies": {
     "async": "~0.2.9",
     "cheerio": "~0.12.4",
-    "express": "~3.4.7"
+    "express": "~3.4.7",
+    "request": "~2.30.0"
   }
 }
