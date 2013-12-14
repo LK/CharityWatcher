@@ -1,0 +1,23 @@
+{
+  "name": "CharityWatcher",
+  "version": "1.0.0",
+  "description": "An API for Charity: Water",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/JFKingsley/CharityWatcher.git"
+  },
+  "author": "Many, many people",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/JFKingsley/CharityWatcher/issues"
+  },
+  "dependencies": {
+    "async": "~0.2.9",
+    "cheerio": "~0.12.4",
+    "express": "~3.4.7"
+  }
+}
