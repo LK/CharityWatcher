@@ -1,5 +1,5 @@
 {
-  "name": "CharityWatcher",
+  "name": "charity-watcher",
   "version": "1.0.0",
   "description": "An API for Charity: Water",
   "main": "app.js",
