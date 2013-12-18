@@ -1,15 +1,27 @@
 var _ = require('underscore');
 
-module.exports = {
+function CampaignController(Model) {
+    // @todo Can probably clean this up?
+    _.bindAll.apply(_, [this].concat(_.functions(this)));
+
+    this.Model = Model;
+};
+
+
+CampaignController.get = function(Model) {
+    return new CampaignController(Model);
+};
+
+_.extend(CampaignController.prototype, {
 
     get: function(req, res, next) {
 
         var sendError = this.error.apply(this, arguments);
+        var model     = this.Model.get(req.body.campaignName);
 
-        require('../models/campaign')(req.body.campaignName).id()
-            .then(function(id) {
-                res.json({ status: 'completed', response: id });
-            }).fail(sendError).done();
+        model.id().then(function(id) {
+            res.json({ status: 'completed', response: id });
+        }).fail(sendError).done();
     },
 
     error: function(req, res) {
@@ -26,7 +38,6 @@ module.exports = {
         }
     }
 
-};
+});
 
-// @todo Can probably clean this up?
-_.bindAll.apply(_, [module.exports].concat(_.functions(module.exports)));
+module.exports = CampaignController;

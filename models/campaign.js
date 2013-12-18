@@ -1,52 +1,64 @@
-var Q    = require('Q');
+var Q       = require('Q');
+var request = Q.denodeify(require('request'));
+var _       = require('underscore');
 
-var ajax = Q.denodeify(require('request'));
+function CampaignModel(name) {
+    // @todo Can probably clean this up?
+    _.bindAll.apply(_, [this].concat(_.functions(this)));
 
-module.exports = function(name) {
+    this.name     = name;
+    this._request = null;
+}
 
-    var getRequest = (function() {
+CampaignModel.get = function(name) {
+    return new CampaignModel(name);
+};
 
-        var request;
+_.extend(CampaignModel.prototype, {
 
-        return function getRequest() {
+    _getRequestUrl: function() {
+        return 'http://my.charitywater.org/' + this.name;
+    },
 
-            if (!name || typeof name !== 'string') {
-                // Unfortunately we're not in promise-context here
-                // so we have to manually construct a rejected promise.
-                // @todo Clean this up
-                return Q.reject(new Error('Empty campaign name'));
-            }
+    _getRequest: function _getRequest() {
+        if (!this.name || typeof this.name !== 'string') {
+            return Q.reject(new Error('Empty campaign name'));
+        }
 
-            if (!request) {
-                request = ajax('http://my.charitywater.org/' + name).then(function(arr) {
+        if (!this._request) {
 
-                    if (Math.floor(arr[0].statusCode / 100) !== 2) {
-                        throw new Error('Invalid campaign name');
-                    }
+            var url = this._getRequestUrl();
 
-                    return arr[0];
-                });
-            }
+            this._request = request(url).then(function _getRequestInner(arr) {
 
-            return request;
-        };
+                if (Math.floor(arr[0].statusCode / 100) !== 2) {
+                    throw new Error('Invalid campaign name');
+                }
 
-    })();
-
-    var getBody = function() {
-        return getRequest().then(function(request) {
-            return request.body;
-        });
-    };
-
-    return {
-
-        id: function() {
-            return getBody().then(function(body) {
-                return parseInt(body.match(/campaign_id\s*=\s*(\d+)/)[1], 10);
+                return arr[0];
             });
         }
 
+        return this._request;
+    },
+
+    _getBody: function _getBody() {
+
+        if (!this._body) {
+            this._body = this._getRequest().then(function _getBodyInner(req) {
+                return req.body;
+            });
+        }
+
+        return this._body;
+    },
+
+    id: function() {
+        return this._getBody().then(function(body) {
+            return Number(body.match(/campaign_id\s*=\s*(\d+)/)[1]);
+        });
     }
 
-};
+});
+
+module.exports = CampaignModel;
