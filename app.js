@@ -1,6 +1,6 @@
-var express = require('express');
-var routes  = require('./routes');
-var app     = express();
+var express  = require('express');
+var app      = express();
+var campaign = require('./controllers/campaign');
 
 // Express and Handlebars middlewear Stack
 app.use(express.bodyParser());
@@ -9,9 +9,7 @@ app.get('/', function(req, res, next) {
 	// code here :P
 });
 
-app.post('/getCampaignID', function(req, res, next) {
-	routes.getCampaignCode(req, res, next);
-});
+app.post('/getCampaignID', campaign.get);
 
 app.listen(80, function() {
 	console.log('Listening on port 80');
