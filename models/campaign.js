@@ -20,7 +20,7 @@ _.extend(CampaignModel.prototype, {
         return 'http://my.charitywater.org/' + this.name;
     },
 
-    _getRequest: function _getRequest() {
+    _getRequest: function() {
         if (!this.name || typeof this.name !== 'string') {
             return Q.reject(new Error('Empty campaign name'));
         }
@@ -29,7 +29,7 @@ _.extend(CampaignModel.prototype, {
 
             var url = this._getRequestUrl();
 
-            this._request = request(url).then(function _getRequestInner(arr) {
+            this._request = request(url).then(function(arr) {
 
                 if (Math.floor(arr[0].statusCode / 100) !== 2) {
                     throw new Error('Invalid campaign name');
@@ -42,10 +42,10 @@ _.extend(CampaignModel.prototype, {
         return this._request;
     },
 
-    _getBody: function _getBody() {
+    _getBody: function() {
 
         if (!this._body) {
-            this._body = this._getRequest().then(function _getBodyInner(req) {
+            this._body = this._getRequest().then(function(req) {
                 return req.body;
             });
         }
