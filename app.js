@@ -8,6 +8,7 @@ app.use(express.bodyParser());
 
 app.get('/campaign/:name', campaignController.get);
 
-app.listen(8080, function() {
-	console.log('Listening on port 8080');
+// @todo #6 - Add a way of customising this
+app.listen(80, function() {
+	console.log('Listening on port 80');
 });
